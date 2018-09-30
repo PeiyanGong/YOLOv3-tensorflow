@@ -1,4 +1,4 @@
-# Inférence
+# Inference
 import tensorflow as tf
 
 from config import Input_shape, threshold, ignore_thresh

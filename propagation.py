@@ -1,9 +1,10 @@
 # from argparse import ArgumentParser
+# coding=utf-8
 from PIL import Image, ImageFont, ImageDraw
 from config import Input_shape, channels, threshold, ignore_thresh, path
 from network_function import YOLOv3
 from detect_function import predict
-from utils.yolo_utils import read_anchors, read_classes, letterbox_image  # , resize_image
+from yolo_utils import read_anchors, read_classes, letterbox_image  # , resize_image
 from timeit import default_timer as timer  # to calculate FPS
 from pathlib import Path
 import numpy as np
@@ -20,7 +21,7 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 class YOLO(object):
     def __init__(self):
 
-        self.anchors_path = path + '/yolo3/model/yolo_anchors.txt'
+        self.anchors_path = path + '/model/yolo_anchors.txt'
         self.COCO = False
         self.trainable = True
 
@@ -28,14 +29,14 @@ class YOLO(object):
         if args1=='COCO':
             print("-----------COCO-----------")
             self.COCO = True
-            self.classes_path = path + '/yolo3/model/coco_classes.txt'
+            self.classes_path = path + '/model/coco_classes.txt'
             self.trainable = False
         elif args1=='VOC':
             print("-----------VOC------------")
-            self.classes_path = path + '/yolo3/model/voc_classes.txt'
+            self.classes_path = path + '/model/voc_classes.txt'
         elif args1=='boat':
             print("-----------boat-----------")
-            self.classes_path = path + '/yolo3/model/boat_classes.txt'
+            self.classes_path = path + '/model/boat_classes.txt'
 
         # args = self.argument()
         # if args.COCO:
@@ -106,11 +107,11 @@ class YOLO(object):
         epoch = input('Entrer a check point at epoch:')
         # For the case of COCO
         epoch = epoch if self.COCO == False else 2000
-        checkpoint = path + "/yolo3/save_model/SAVER_MODEL_boat10/model.ckpt-" + str(epoch)
+        checkpoint = path + "/save_model/SAVER_MODEL_boat10/model.ckpt-" + str(epoch)
         try:
             aaa = checkpoint + '.meta'
             my_abs_path = Path(aaa).resolve()
-        except FileNotFoundError:
+        except :
             print("Not yet training!")
         else:
             saver.restore(sess, checkpoint)
@@ -152,7 +153,7 @@ class YOLO(object):
         print('Found {} boxes for {}'.format(len(out_boxes), 'img'))
 
         # Visualisation#################################################################################################
-        font = ImageFont.truetype(font=path + '/yolo3/model/font/FiraMono-Medium.otf', size=np.floor(3e-2 * image.size[1] + 0.5).astype(np.int32))
+        font = ImageFont.truetype(font=path + '/model/font/FiraMono-Medium.otf', size=np.floor(3e-2 * image.size[1] + 0.5).astype(np.int32))
         thickness = (image.size[0] + image.size[1]) // 500  # do day cua BB
 
         for i, c in reversed(list(enumerate(out_classes))):
@@ -185,7 +186,7 @@ class YOLO(object):
         return image
 
 def detect_video(yolo, video_path=None, output_video=None):
-    import urllib.request as urllib
+    import urllib2 as urllib
     import cv2
 
     fourcc = cv2.VideoWriter_fourcc(*'XVID')
@@ -280,7 +281,7 @@ def detect_img(yolo, output=''):
     while True:
         img = input('Input image filename:')
         try:
-            img = path + '/yolo3' + str(img)
+            img = path + '' + str(img)
             image = Image.open(img)
         except:
             print('Open Error! Try again!')

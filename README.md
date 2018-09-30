@@ -7,7 +7,7 @@ Inspired by [YAD2K](https://github.com/allanzelener/YAD2K), [Darknet](https://gi
 
 The full details are in this [paper](https://pjreddie.com/media/files/papers/YOLOv3.pdf)
 
-
+Adding stuff so this can run with python 2.7
 ##  Architecture
 
 
